@@ -1,28 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager
-import os
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///login.sqlite'
-app.config['SECRET_KEY'] = os.urandom(24)
 db = SQLAlchemy(app)
 
-
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     complete = db.Column(db.Boolean)
-
-class User(UserMixin, db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	username = db.Column(db.String(50), nullable=False, unique=True)
-	password = db.Column(db.String(25))
 
 
 @app.route("/")
@@ -57,10 +45,11 @@ def delete(todo_id):
 
 
 if __name__ == "__main__":
-    db.create_all()
+    # db.create_all()
     app.run(debug=True)
 
 # Flask,SQLAlchemy,create_all()ができないとき、対話シェルで下記の通り
+
 # from app import app,db
 
 # > with app.app_context():
